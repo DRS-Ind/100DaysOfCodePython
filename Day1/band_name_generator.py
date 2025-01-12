@@ -9,6 +9,9 @@ def band_name_generator(city_name: str, pet_name: str) -> str:
 
 
 if __name__ == '__main__':
+    # Hello massage
+    print("Welcome to the Band Name Generator.")
+
     # Claim information from user about his city and pet names
     city, pet = input("What's the name of the city you grew up in?\n"), input("What's your pet's name?\n")
 

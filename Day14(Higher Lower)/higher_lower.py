@@ -79,6 +79,7 @@ Compare B: {[key_data for key_data in self._compare_b][0]}""")
         os.system('cls' if os.name == 'nt' else 'clear')
         print(f"{logo}\nSorry that`s wrong. Final score: {self.score}")
 
+
 def parse_data_to_compare(index: int) -> dict[str, int]:
     """
     Function for parsing data from game_data.py, especially for 14 day of codding.

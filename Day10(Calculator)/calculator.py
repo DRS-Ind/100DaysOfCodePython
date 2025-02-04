@@ -13,7 +13,7 @@ class Calculator:
         """
         self._memory_number = start_number
         self._last_operation = None
-        self.acceptable_operations = ["+", "-", "*", "/"]
+        self.acceptable_operations = ["+", "-", "*", "/", "%", "**", "//"]
 
     def __str__(self) -> str:
         """
@@ -46,10 +46,12 @@ class Calculator:
             self.multiplication(multiplicand=number)
         elif operation == '/':
             self.division(divisor=number)
-        # Maybe next
-        # %	Modulus	x % y
-        # **	Exponentiation	x ** y
-        # //	Floor division	x // y
+        elif operation == "%":
+            self.modulus(divisor=number)
+        elif operation == "**":
+            self.exponentiation(exponent=number)
+        elif operation == "//":
+            self.floor_division(divisor=number)
 
     def addition(self, second_addend: float) -> float:
         """
@@ -105,6 +107,56 @@ class Calculator:
             self._last_operation = f"{self._memory_number} / {divisor} == {self._memory_number}"
             # return memory number without change
             return self._memory_number
+
+    def modulus(self, divisor: int | float) -> float:
+        """
+        Represent signed remainder of a division, after one number is divided by another
+        :param divisor: claim divisor
+        :return: returns the remainder
+        """
+        try:
+            result = self._memory_number % divisor
+            # write into variable visual representation of the operation
+            self._last_operation = f"{self._memory_number} % {divisor} == {result}"
+            self._memory_number = result
+            return round(self._memory_number, 2)
+        except ZeroDivisionError:  # catch division by zero
+            print("Impossible division on zero. Result haven`t change.")
+            # write into variable visual representation of the zero division
+            self._last_operation = f"{self._memory_number} % {divisor} == {self._memory_number}"
+            # return memory number without change
+            return self._memory_number
+
+    def floor_division(self, divisor: int | float) -> float:
+        """
+        Represent division operation that rounds the result down to the nearest whole number or integer.
+        :param divisor: claim divisor
+        :return: nearest whole number of the division
+        """
+        try:
+            result = self._memory_number // divisor
+            # write into variable visual representation of the operation
+            self._last_operation = f"{self._memory_number} // {divisor} == {result}"
+            self._memory_number = result
+            return int(self._memory_number)
+        except ZeroDivisionError:  # catch division by zero
+            print("Impossible division on zero. Result haven`t change.")
+            # write into variable visual representation of the zero division
+            self._last_operation = f"{self._memory_number} // {divisor} == {self._memory_number}"
+            # return memory number without change
+            return self._memory_number
+
+    def exponentiation(self, exponent: int | float) -> float:
+        """
+        Represent repeated multiplication
+        :param exponent: claim exponent or power
+        :return: product of the exponentiation
+        """
+        result = self._memory_number ** exponent
+        # write into variable visual representation of the operation
+        self._last_operation = f"{self._memory_number} ** {exponent} == {result}"
+        self._memory_number = result
+        return round(self._memory_number, 2)
 
 
 def main() -> None:

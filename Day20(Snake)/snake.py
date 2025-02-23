@@ -1,34 +1,40 @@
-import time
-from turtle import Turtle, Screen
+from turtle import Turtle
 
 
-# screen setup
-screen, x_pos, y_pos = Screen(), 0, 0
-screen.setup(width=600, height=600)
-screen.bgcolor("black")
-screen.title("Snake the game")
-screen.tracer(0)  # setting screen update only on command
+class Snake:
+    def __init__(self) -> None:
+        self.body = [Turtle(shape="square") for _ in range(3)]
+        self.create_snake()
+        self.head = self.body[0]
 
-# initial snake setup
-snake = [Turtle(shape="square") for _ in range(3)]
-for segment in snake:
-    segment.color("white")
-    segment.penup()
-    segment.setpos(x=x_pos, y=y_pos)
-    x_pos -= 20
+    def create_snake(self) -> None:
+        x_pos, y_pos = 0, 0
+        for segment in self.body:
+            segment.color("white")
+            segment.penup()
+            segment.setpos(x=x_pos, y=y_pos)
+            x_pos -= 20
 
-# command to update the screen
-screen.update()
+    def move(self) -> None:
+        for i_segment in range(len(self.body) - 1, 0, -1):
+            new_x_pos = self.body[i_segment - 1].xcor()
+            new_y_pos = self.body[i_segment - 1].ycor()
+            self.body[i_segment].setpos(x=new_x_pos, y=new_y_pos)
+        self.head.forward(20)
 
-# test for snake move
-while True:
-    screen.update()  # update the snake after every move
-    time.sleep(0.1)  # pause for smooth moving
-    for i_segment in range(len(snake) - 1, 0, -1):
-        new_x_pos = snake[i_segment - 1].xcor()
-        new_y_pos = snake[i_segment - 1].ycor()
-        snake[i_segment].setpos(x=new_x_pos, y=new_y_pos)
-    snake[0].forward(20)
-    snake[0].left(90)
+    def up(self) -> None:
+        if self.head.heading() != 270:
+            self.head.setheading(90)
 
-# screen.exitonclick()
+    def down(self) -> None:
+        if self.head.heading() != 90:
+            self.head.setheading(270)
+
+    def right(self) -> None:
+        if self.head.heading() != 180:
+            self.head.setheading(0)
+
+    def left(self) -> None:
+        if self.head.heading() != 0:
+            self.head.setheading(180)
+

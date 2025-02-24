@@ -1,6 +1,8 @@
 import time
+from food import Food
 from snake import Snake
-from turtle import Turtle, Screen
+from turtle import Screen
+from scoreboard import ScoreBoard
 
 
 # screen setup
@@ -10,11 +12,8 @@ screen.bgcolor("black")
 screen.title("Snake the game")
 screen.tracer(0)  # setting screen update only on command
 
-# initial snake setup
-snake = Snake()
-
-# command to update the screen
-screen.update()
+# initialize variable for snake, food and scoreboard
+snake, food, scoreboard = Snake(), Food(), ScoreBoard()
 
 # control movement of the snake
 screen.listen()
@@ -29,4 +28,14 @@ while True:
     time.sleep(0.1)  # pause for smooth moving
     snake.move()  # let`s move the snake
 
-# screen.exitonclick()
+    # collide with food
+    if snake.head.distance(food) < 15:
+        scoreboard.increase_score()
+        food.appear()
+
+    # collide with wall
+    if snake.head.xcor() > 280 or snake.head.xcor() < -280 or snake.head.ycor() > 280 or snake.head.ycor() < -280:
+        scoreboard.game_over()
+        break
+
+screen.exitonclick()

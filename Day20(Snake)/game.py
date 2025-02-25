@@ -5,37 +5,56 @@ from turtle import Screen
 from scoreboard import ScoreBoard
 
 
-# screen setup
-screen = Screen()
-screen.setup(width=600, height=600)
-screen.bgcolor("black")
-screen.title("Snake the game")
-screen.tracer(0)  # setting screen update only on command
+class SnakeTheGame:
+    def __init__(self) -> None:
+        self.screen = Screen()
+        self.snake = Snake()
+        self.food = Food()
+        self.scoreboard = ScoreBoard()
+        self.is_game = True
 
-# initialize variable for snake, food and scoreboard
-snake, food, scoreboard = Snake(), Food(), ScoreBoard()
+    def screen_setup(self) -> None:
+        self.screen.setup(width=600, height=600)
+        self.screen.bgcolor("black")
+        self.screen.title("Snake the game")
+        self.screen.tracer(0)  # setting screen update only on command
 
-# control movement of the snake
-screen.listen()
-screen.onkey(fun=snake.up, key="Up")
-screen.onkey(fun=snake.down, key="Down")
-screen.onkey(fun=snake.left, key="Left")
-screen.onkey(fun=snake.right, key="Right")
+        # control movement of the snake
+        self.screen.listen()
+        self.screen.onkey(fun=self.snake.up, key="Up")
+        self.screen.onkey(fun=self.snake.down, key="Down")
+        self.screen.onkey(fun=self.snake.left, key="Left")
+        self.screen.onkey(fun=self.snake.right, key="Right")
 
-# start the game
-while True:
-    screen.update()  # update the snake after every move
-    time.sleep(0.1)  # pause for smooth moving
-    snake.move()  # let`s move the snake
+    def start(self) -> None:
+        self.screen_setup()
+        # start the game
+        while self.is_game:
+            self.screen.update()  # update the snake after every move
+            time.sleep(0.1)  # pause for smooth moving
+            self.snake.move()  # let`s move the snake
 
-    # collide with food
-    if snake.head.distance(food) < 15:
-        scoreboard.increase_score()
-        food.appear()
+            # collide with food
+            if self.snake.head.distance(self.food) < 15:
+                self.scoreboard.increase_score()
+                self.snake.add_segment()
+                self.food.appear()
 
-    # collide with wall
-    if snake.head.xcor() > 280 or snake.head.xcor() < -280 or snake.head.ycor() > 280 or snake.head.ycor() < -280:
-        scoreboard.game_over()
-        break
+            # collide with wall
+            if (self.snake.head.xcor() > 290 or self.snake.head.xcor() < -290 or
+                    self.snake.head.ycor() > 290 or self.snake.head.ycor() < -290):
+                self.scoreboard.game_over()
+                self.is_game = False
 
-screen.exitonclick()
+            # collide with itself
+            for segment in self.snake.body[1:]:
+                if self.snake.head.distance(segment) < 10:
+                    self.scoreboard.game_over()
+                    self.is_game = False
+
+        self.screen.exitonclick()
+
+
+if __name__ == '__main__':
+    game = SnakeTheGame()
+    game.start()

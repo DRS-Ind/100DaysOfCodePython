@@ -21,6 +21,16 @@ class Snake:
             segment.setpos(x=x_pos, y=y_pos)
             x_pos -= 20
 
+    def add_segment(self) -> None:
+        """
+        Adding new segment for snake and teleport it in the end of the snake`s body.
+        :return:
+        """
+        self.body.append(Turtle(shape="square"))
+        self.body[-1].color("white")
+        self.body[-1].penup()
+        self.body[-1].setpos(self.body[-2].position())
+
     def move(self) -> None:
         """
         The function for the correct snake`s moving.
@@ -58,4 +68,3 @@ class Snake:
         """
         if self.head.heading() != 0:
             self.head.setheading(180)
-

@@ -1,5 +1,8 @@
+import time
+from ball import Ball
 from turtle import Screen
 from paddle import Paddle
+from scorepoard import ScoreBoard
 
 
 class PongTheGame:
@@ -11,6 +14,8 @@ class PongTheGame:
         self.display_setup()
         self.right_paddle = Paddle(x_cor=350)
         self.left_paddle = Paddle(x_cor=-350)
+        self.ball = Ball()
+        self.scoreboard = ScoreBoard()
 
     def display_setup(self) -> None:
         """
@@ -26,15 +31,32 @@ class PongTheGame:
         Used to start the game.
         """
         self.screen.listen()
-        self.screen.onkey(fun=self.right_paddle.go_up, key="Up")
-        self.screen.onkey(fun=self.right_paddle.go_down, key="Down")
-        self.screen.onkey(fun=self.left_paddle.go_up, key="w")
-        self.screen.onkey(fun=self.left_paddle.go_down, key="s")
+        self.screen.onkeypress(fun=self.right_paddle.go_up, key="Up")
+        self.screen.onkeypress(fun=self.right_paddle.go_down, key="Down")
+        self.screen.onkeypress(fun=self.left_paddle.go_up, key="w")
+        self.screen.onkeypress(fun=self.left_paddle.go_down, key="s")
 
-        while True:
+        while True:  # let the endless game begin
+            time.sleep(self.ball.movement_acceleration)
             self.screen.update()
+            self.ball.move()
 
-        self.screen.exitonclick()
+            # the ball bounces off walls
+            if self.ball.ycor() > 280 or self.ball.ycor() < -280:
+                self.ball.bounce()
+
+            # and bounces off paddles
+            if ((self.ball.distance(self.right_paddle) < 50 and self.ball.xcor() > 320) or
+                    (self.ball.distance(self.left_paddle) < 50 and self.ball.xcor() < -320)):
+                self.ball.paddle_bounce()
+
+            # the ball is out of bounds
+            if self.ball.xcor() > 400:  # left gets a point
+                self.ball.reset_position()
+                self.scoreboard.point_to_left()
+            elif self.ball.xcor() < -400:  # right gets a point
+                self.ball.reset_position()
+                self.scoreboard.point_to_right()
 
 
 if __name__ == '__main__':

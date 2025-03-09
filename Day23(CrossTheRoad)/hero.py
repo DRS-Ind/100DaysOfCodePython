@@ -8,15 +8,15 @@ class HeroTurtle(Turtle):
         """
         super().__init__()
         self.shape("turtle")
-        self.setheading(90)
         self.penup()
-        self.sety(-270)
+        self.setheading(90)
+        self.reset_pos()
 
     def move_up(self) -> None:
         """
         The function for moving up.
         """
-        self.sety(y=self.ycor() + 10)
+        self.forward(10)
 
     def move_right(self) -> None:
         """

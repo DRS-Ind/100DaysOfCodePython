@@ -10,6 +10,10 @@ class Snake:
         self.create_snake()
         self.head = self.body[0]
 
+    def blast_away(self) -> None:
+        for seg in self.body:
+            seg.setpos(x=1000, y=1000)
+
     def create_snake(self) -> None:
         """
         The setup function for the snake`s body is used to set up each snake segment.

@@ -1,0 +1,12 @@
+{
+  "highscores": [
+    {
+      "name": "Adam",
+      "highscore": 12
+    },
+    {
+      "name": "Eve",
+      "highscore": 13
+    }
+  ]
+}

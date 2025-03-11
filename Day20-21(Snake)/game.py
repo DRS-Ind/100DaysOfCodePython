@@ -10,8 +10,18 @@ class SnakeTheGame:
         self.screen = Screen()
         self.snake = Snake()
         self.food = Food()
-        self.scoreboard = ScoreBoard()
+        self.username = self.screen.textinput(
+            title="Name", prompt="Write down your name to save it to the scoreboard"
+        )
+        self.scoreboard = ScoreBoard(name=self.username)
         self.is_game = True
+
+    def reset_game(self) -> None:
+        self.snake.blast_away()
+        self.snake = Snake()
+        self.scoreboard.reset_scoreboard()
+        self.is_game = True
+        self.start()
 
     def screen_setup(self) -> None:
         self.screen.setup(width=600, height=600)
@@ -25,6 +35,7 @@ class SnakeTheGame:
         self.screen.onkey(fun=self.snake.down, key="Down")
         self.screen.onkey(fun=self.snake.left, key="Left")
         self.screen.onkey(fun=self.snake.right, key="Right")
+        self.screen.onkey(fun=self.reset_game, key="r")
 
     def start(self) -> None:
         self.screen_setup()

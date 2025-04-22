@@ -1,21 +1,43 @@
+# from tool import get_mouse_clic_coordinates
+from turtle import Screen, shape
 import pandas
-
-
-def count_every_color(info: pandas.DataFrame, colors: list[str]) -> dict:
-    return {color: len(info[info["Primary Fur Color"] == color]) for color in colors}
+from checker import Checker
 
 
 def main() -> None:
-    data = pandas.read_csv("2018_Central_Park_Squirrel_Census_-_Squirrel_Data.csv")
-    colors = data["Primary Fur Color"].drop_duplicates().to_list()[1:]
-    colors_with_counts = count_every_color(info=data, colors=colors)
-    result_in_dict = {
-        "Fur color": colors,
-        "Counts": colors_with_counts.values()
-    }
-    result = (pandas.DataFrame(result_in_dict))
-    result.to_csv("squirrel_count.csv")
+    """
+    The main function.
+    """
+    # initializing values
+    screen, image, data = Screen(), 'blank_states_img.gif', pandas.read_csv("50_states.csv")
+    game_checker = Checker(data=data)
+
+    # screen setup
+    screen.setup(width=780, height=550)
+    screen.title("U.S States Guesser")
+    screen.addshape(image)
+    shape(image)
+
+    # for using tool get_mouse_clic_coordinates() you need to comment screen.exitonclick() row
+    # turtle.onscreenclick(get_mouse_clic_coordinates)
+    # turtle.mainloop()
+
+    # main loop
+    while game_checker.right_guesses() < 50:
+        user_answer = screen.textinput(
+            title=f"{game_checker.right_guesses()}/50 States correct",
+            prompt="What`s another state`s name?"
+        ).title()
+
+        # stop the game while type "exit"
+        if user_answer == "Exit":
+            game_checker.not_guessed()
+            break
+
+        game_checker.check_answer(guess=user_answer)
+
+    screen.exitonclick()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

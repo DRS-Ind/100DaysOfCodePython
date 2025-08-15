@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 
 
 if __name__ == '__main__':
+    # load the variables from environment
     load_dotenv()
 
     FLIGHT_API_KEY = os.environ["FLIGHT_API_KEY"]
@@ -18,6 +19,7 @@ if __name__ == '__main__':
     SENDER_PHONE = os.environ["SENDER_PHONE"]
     VERIFIED_PHONE = os.environ["VERIFIED_PHONE"]
 
+    # initialize main classes
     sheety_engine = DataManager(sheety_token=SHEETY_API)
     search_engine = FlightSearch(api=FLIGHT_API_KEY, secret=FLIGHT_API_SECRET)
     flight_data = FlightData()
@@ -31,6 +33,7 @@ if __name__ == '__main__':
     print("Get info from sheets")
     data_from_sheets = sheety_engine.get_rows()
 
+    # read information from sheets and update the iata codes if that column empty
     if data_from_sheets[0]["iataCode"] == "":
         print("Update sheets")
         updated_data = search_engine.get_the_iata_code(sheet_data=sheety_engine.get_rows())
@@ -43,6 +46,7 @@ if __name__ == '__main__':
     print("Finding the cheapest one")
     flight_data.find_cheapest_flight(data=deals_data)
 
+    # send message with the lowest prices if deal has it
     right_row = [row for row in data_from_sheets if flight_data.destination in row][0]
     if right_row["lowestPrise"] > flight_data.price:
         print(flight_data)

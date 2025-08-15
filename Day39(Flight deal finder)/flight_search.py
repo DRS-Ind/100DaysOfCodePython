@@ -3,8 +3,13 @@ import datetime
 
 
 class FlightSearch:
-    # This class is responsible for talking to the Flight Search API.
     def __init__(self, api: str, secret: str) -> None:
+        """
+        This class is responsible for talking to the Flight Search API.
+
+        :param api: your API token
+        :param secret: your API secret
+        """
         self._api = api
         self._secret = secret
         self._token = self._get_new_token()["access_token"]
@@ -12,6 +17,9 @@ class FlightSearch:
         self.headers = {"Authorization": f"Bearer {self._token}"}
 
     def _get_new_token(self) -> dict:
+        """
+        The function generates an API token for fully using the API.
+        """
         header = {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
@@ -25,6 +33,11 @@ class FlightSearch:
         return response.json()
 
     def get_the_iata_code(self, sheet_data: list) -> list:
+        """
+        The function reads the data and fills the IATA code if it finds it.
+
+        :param sheet_data: information to operate
+        """
         url = "https://test.api.amadeus.com/v1/reference-data/locations/cities"
         result = list()
         for row in sheet_data:
@@ -38,6 +51,11 @@ class FlightSearch:
         return result
 
     def get_prices(self, data: list) -> list | None:
+        """
+        The function gets flight deals relying on data.
+
+        :param data: data with the parameters for flight search
+        """
         result = list()
         for row in data:
             print(f"Get flight for {row["city"]}")

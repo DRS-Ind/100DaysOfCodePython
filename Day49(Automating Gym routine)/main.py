@@ -33,7 +33,7 @@ def retry(func=None, retries=7, description=None):
 
 
 
-class RoutineAutomatizer:
+class RoutineAutomatize:
     def __init__(self, email: str, password: str) -> None:
         """
         The class for booking gym classes
@@ -117,7 +117,7 @@ Total Tuesday 6pm classes processed: {sum((self.booked, self.waitlisted, self.al
         # go through day cards
         for day in day_group:
             day_title = day.find_element(By.CSS_SELECTOR, 'h2[id^="day-title-"]').text
-            # delete "Today" and "Tomorrow" from day_title if you don`t want those ones
+            # delete "Today" and "Tomorrow" from day_title if you don`t want those
             # if "(" in day_title or ")" in day_title:
             #     day_title = re.findall(r"\(([^)]+)\)", day_title)[0]
 
@@ -211,7 +211,7 @@ Total Tuesday 6pm classes processed: {sum((self.booked, self.waitlisted, self.al
 
 if __name__ == '__main__':
     # fill the email and password class variable
-    gym_manager = RoutineAutomatizer(email="__your_email__", password="__your_password__")
+    gym_manager = RoutineAutomatize(email="__your_email__", password="__your_password__")
     if gym_manager.login_in():
         gym_manager.find_class()
         print(gym_manager)

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog</title>
+</head>
+<body>
+    {% for blog in blogs_data: %}
+        {% if blog["id"] == 2: %}
+            <h1>{{ blog["title"] }}</h1>
+            <h2>{{ blog["subtitle"] }}</h2>
+        {% endif %}
+    {% endfor %}
+</body>
+<footer>
+    <p>@ Copyright {{ current_year }}. Good_time_Inc.</p>
+</footer>
+</html>
